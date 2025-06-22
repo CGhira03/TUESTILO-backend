@@ -49,7 +49,6 @@ exports.getAll = async (req, res) => {
   }
 };
 
-// Obtener producto por ID
 exports.getOne = async (req, res) => {
   try {
     const [[product]] = await db.query('SELECT * FROM products WHERE id = ?', [req.params.id]);

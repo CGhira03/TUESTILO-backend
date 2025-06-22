@@ -1,6 +1,5 @@
 const mysql = require('mysql2/promise');
 
-// Creamos un pool de conexiones
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT),
@@ -12,7 +11,6 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-// Opcional: verificar conexión una sola vez al iniciar
 async function verificarConexion() {
   try {
     const conexion = await pool.getConnection();

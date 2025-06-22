@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { verifyToken } = require('../middlewares/authMiddleware');
-const userController = require('../controllers/userController'); // ✅ Importa el controlador
+const userController = require('../controllers/userController'); 
 
 // Actualizar perfil del usuario
 router.put('/me', verifyToken, userController.updateProfile);

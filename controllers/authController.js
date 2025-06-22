@@ -21,7 +21,7 @@ exports.register = async (req, res) => {
 
     const userId = result.insertId;
 
-    // ✅ Generar token
+    // Generar token
     const token = jwt.sign(
       {
         id: userId,
@@ -32,7 +32,7 @@ exports.register = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    // ✅ Enviar token y datos mínimos
+    // Enviar token y datos mínimos
     res.status(201).json({
       token,
       user: {
@@ -60,10 +60,8 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    // Obtener conexión del pool
     connection = await db.getConnection();
     
-    // Ejecutar consulta
     const [[user]] = await connection.query(
       'SELECT * FROM users WHERE email = ?', 
       [email]
@@ -89,7 +87,6 @@ exports.login = async (req, res) => {
     console.error('Error en login:', error);
     res.status(500).json({ message: 'Error en el servidor' });
   } finally {
-    // Liberar conexión siempre
     if (connection) connection.release();
   }
 };

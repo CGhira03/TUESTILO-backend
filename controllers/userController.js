@@ -1,6 +1,5 @@
 const db = require('../config/db');
 
-// Obtener perfil de usuario
 exports.getProfile = async (req, res) => {
   const userId = req.user.id;
   try {
@@ -20,7 +19,7 @@ exports.getProfile = async (req, res) => {
         email: user.email,
         address: user.address,
         phone: user.phone,
-        role: user.is_admin ? 'admin' : 'user'  // ✅ ahora devuelve 'role'
+        role: user.is_admin ? 'admin' : 'user'  
       }
     });
   } catch (error) {
@@ -29,10 +28,9 @@ exports.getProfile = async (req, res) => {
 };
 
 
-// Actualizar perfil de usuario
 exports.updateProfile = async (req, res) => {
   const userId = req.user.id;
-  const { name, email, address, phone } = req.body; // 👈 usamos "phone" no "contact"
+  const { name, email, address, phone } = req.body; 
 
   try {
     await db.query(
@@ -45,50 +43,7 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
-// Obtener wishlist del usuario
-exports.getWishlist = async (req, res) => {
-  const userId = req.user.id;
-  try {
-    const [wishlist] = await db.query(
-      `SELECT p.id, p.name, p.price, p.image_url 
-       FROM wishlist w 
-       JOIN products p ON w.product_id = p.id 
-       WHERE w.user_id = ?`,
-      [userId]
-    );
-    res.json(wishlist);
-  } catch (error) {
-    res.status(500).json({ message: 'Error al obtener la wishlist', error });
-  }
-};
 
-// Añadir producto a wishlist
-exports.addWishlist = async (req, res) => {
-  const userId = req.user.id;
-  const productId = req.params.productId;
-
-  try {
-    const [existing] = await db.query(
-      'SELECT * FROM wishlist WHERE user_id = ? AND product_id = ?',
-      [userId, productId]
-    );
-
-    if (existing.length > 0) {
-      return res.status(400).json({ message: 'Este producto ya está en tu wishlist' });
-    }
-
-    await db.query(
-      'INSERT INTO wishlist (user_id, product_id) VALUES (?, ?)',
-      [userId, productId]
-    );
-
-    res.status(201).json({ message: 'Producto añadido a wishlist' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error al añadir a wishlist', error });
-  }
-};
-
-// Obtener carrito del usuario
 exports.getCart = async (req, res) => {
   const userId = req.user.id;
 
@@ -106,7 +61,6 @@ exports.getCart = async (req, res) => {
   }
 };
 
-// Añadir producto al carrito
 exports.addCart = async (req, res) => {
   const userId = req.user.id;
   const { productId, quantity } = req.body;

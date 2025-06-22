@@ -10,8 +10,8 @@ const verifyToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Token decodificado:', decoded); // ✅ para depurar
-    req.user = decoded; // asegúrate de que contiene { id, email, role }
+    console.log('Token decodificado:', decoded); // para depurar
+    req.user = decoded; 
     next();
   } catch (error) {
     console.error('Token inválido:', error.message);
